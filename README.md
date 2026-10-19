@@ -1,30 +1,46 @@
-# 🖱️ ESP32 Air Mouse & Presentation Remote
+# 🖱️ ESP32 Air Mouse & Presentation Controller
 
-Bezprzewodowy kontroler przestrzenny (mysz żyroskopowa) do komputera PC, inspirowany rozwiązaniem LG Magic Remote. Projekt realizowany w ramach laboratorium projektowego.
+A wireless spatial controller (gyroscopic air mouse) designed for PC control and presentations, inspired by the LG Magic Remote. Developed as part of an engineering design laboratory project.
 
-## 📌 Główne funkcjonalności
-- **Sterowanie kursorem w powietrzu:** Mapowanie wskazań żyroskopu (MPU-6050) na ruch w osiach X i Y.
-- **Filtracja drżenia (Deadzone):** Eliminacja mimowolnego mikrodrżenia dłoni.
-- **Dynamiczna akceleracja:** Precyzyjne ruchy przy małych prędkościach, szybkie przeskoki ekranu przy gwałtownych gestach.
-- **Przycisk funkcyjny (Clutch / Scroll):** Zamrażanie ruchu kursora oraz tryb przewijania stron ruchem dłoni.
-- **Komunikacja Plug & Play:** Urządzenie emuluje standardową mysz BLE HID (działa na Windows/Linux/macOS bez dodatkowych sterowników).
+---
 
-## 🛠️ Wykorzystany sprzęt
-- **Mikrokontroler:** ESP32 NodeMCU (BLE 4.2)
-- **Czujnik IMU:** 6-osiowy MPU-6050 (akcelerometr + żyroskop)
-- **Przyciski:** 3x tact-switch (LPM, PPM, Przycisk funkcyjny)
-- **Zasilanie:** Akumulator Li-Po + moduł ładowania TP4056
+## 📌 Key Features
+- **In-Air Cursor Tracking:** Translates 6-axis gyroscope movements (MPU-6050) into smooth on-screen cursor motion (X/Y axes).
+- **Deadzone Filtering:** Hardware/software noise filtering to eliminate natural hand tremors and jitter.
+- **Dynamic Acceleration:** Non-linear speed scaling (slow motions provide pixel-level precision, rapid flicks allow quick screen crossing).
+- **Clutch / Freeze Button:** Allows pausing cursor movement to reposition the hand without affecting cursor placement on screen.
+- **Scroll Mode:** Holding a secondary function button converts pitch tilt into vertical mouse wheel scrolling.
+- **Dual Operating Modes:** Easily toggle between **Mouse Mode** and **Presentation Mode** (flick gestures change PowerPoint slides).
+- **Plug & Play (BLE HID):** Emulates a standard Bluetooth Low Energy Human Interface Device (no additional PC drivers required; works on Windows, macOS, and Linux).
 
-## 🔌 Schemat połączeń (Pinout)
-- `MPU-6050 SDA` -> `ESP32 GPIO 21`
-- `MPU-6050 SCL` -> `ESP32 GPIO 22`
-- `LPM (Lewy Przycisk)` -> `ESP32 GPIO 18` (do GND)
-- `PPM (Prawy Przycisk)` -> `ESP32 GPIO 19` (do GND)
-- `Przycisk Funkcyjny` -> `ESP32 GPIO 23` (do GND)
+---
 
-## 📅 Harmonogram i Kamienie Milowe
-- [x] Dobór komponentów i analiza założeń (SMART)
-- [ ] Uruchomienie odczytu z MPU-6050 i bazowa emulacja BLE HID (Faza 1)
-- [ ] Implementacja deadzone, akceleracji i trybu scroll (Faza 2)
-- [ ] Projekt i wydruk obudowy 3D oraz montaż zasilania Li-Po (Faza 3)
-- [ ] Testy użytkowe i dokumentacja końcowa (Faza 4)
+## 🛠️ Hardware Stack
+- **Microcontroller:** ESP32 NodeMCU (integrated Bluetooth Low Energy 4.2)
+- **IMU Sensor:** MPU-6050 (3-axis gyroscope + 3-axis accelerometer)
+- **Buttons:** 3x tactile microswitches (LMB, RMB, Clutch/Function switch)
+- **Power Supply:** 3.7V Li-Po battery + TP4056 USB-C charging module
+- **Enclosure:** Custom 3D-printed ergonomic casing
+
+---
+
+## 🔌 Pinout & Wiring Diagram
+
+| Component | Pin | ESP32 GPIO | Description / Mode |
+| :--- | :--- | :--- | :--- |
+| **MPU-6050** | VCC | **3V3** | Power supply |
+| **MPU-6050** | GND | **GND** | Ground |
+| **MPU-6050** | SCL | **GPIO 22** | I2C Clock |
+| **MPU-6050** | SDA | **GPIO 21** | I2C Data |
+| **Left Click (LMB)** | Pin 1 / Pin 2 | **GPIO 18** / **GND** | `INPUT_PULLUP` (Active LOW) |
+| **Right Click (RMB)**| Pin 1 / Pin 2 | **GPIO 19** / **GND** | `INPUT_PULLUP` (Active LOW) |
+| **Clutch / Function**| Pin 1 / Pin 2 | **GPIO 23** / **GND** | `INPUT_PULLUP` (Active LOW) |
+
+---
+
+## 📅 Development Roadmap & Milestones (Deadline: Mid-December)
+- [x] Component selection, requirements specification, and SMART goal definition.
+- [ ] **Milestone 1:** Breadboard prototype: MPU-6050 I2C data acquisition & basic BLE HID cursor movement.
+- [ ] **Milestone 2:** Firmware refinement: deadzone filtering, dynamic acceleration, and scroll mode implementation.
+- [ ] **Milestone 3:** Power circuit integration (Li-Po + TP4056) and CAD modeling / 3D printing of the casing.
+- [ ] **Milestone 4:** Final user testing, latency benchmarking, and project documentation.
