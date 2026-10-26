@@ -1,46 +1,87 @@
-# 🖱️ ESP32 Air Mouse & Presentation Controller
+# 🖱️ STM32 Air Mouse & Spatial Controller
 
-A wireless spatial controller (gyroscopic air mouse) designed for PC control and presentations, inspired by the LG Magic Remote. Developed as part of an engineering design laboratory project.
+A native USB spatial controller (gyroscopic air mouse) implemented in pure C on an ARM Cortex-M4 (STM32F411) microcontroller. Designed to eliminate ergonomic and precision flaws of traditional air mice in desktop computing environments.
 
----
-
-## 📌 Key Features
-- **In-Air Cursor Tracking:** Translates 6-axis gyroscope movements (MPU-6050) into smooth on-screen cursor motion (X/Y axes).
-- **Deadzone Filtering:** Hardware/software noise filtering to eliminate natural hand tremors and jitter.
-- **Dynamic Acceleration:** Non-linear speed scaling (slow motions provide pixel-level precision, rapid flicks allow quick screen crossing).
-- **Clutch / Freeze Button:** Allows pausing cursor movement to reposition the hand without affecting cursor placement on screen.
-- **Scroll Mode:** Holding a secondary function button converts pitch tilt into vertical mouse wheel scrolling.
-- **Dual Operating Modes:** Easily toggle between **Mouse Mode** and **Presentation Mode** (flick gestures change PowerPoint slides).
-- **Plug & Play (BLE HID):** Emulates a standard Bluetooth Low Energy Human Interface Device (no additional PC drivers required; works on Windows, macOS, and Linux).
+Developed as an interdisciplinary project bridging Product Design (Design Laboratory) and Embedded Systems (Microprocessor Engineering).
 
 ---
 
-## 🛠️ Hardware Stack
-- **Microcontroller:** ESP32 NodeMCU (integrated Bluetooth Low Energy 4.2)
-- **IMU Sensor:** MPU-6050 (3-axis gyroscope + 3-axis accelerometer)
-- **Buttons:** 3x tactile microswitches (LMB, RMB, Clutch/Function switch)
-- **Power Supply:** 3.7V Li-Po battery + TP4056 USB-C charging module
-- **Enclosure:** Custom 3D-printed ergonomic casing
+## 📌 Project Overview & Problem Statement
+
+Traditional in-air mice suffer from a major ergonomic defect known as **Click-Jitter**: the physical force applied to press a button inadvertently tilts the hand, causing the cursor to slip away from small desktop GUI targets (such as window close buttons or checkboxes).
+
+This project modernizes the air mouse concept by introducing:
+
+1. **Anti-Jitter Click Stabilization (Core Innovation):** A software algorithm that locks/stabilizes cursor coordinates for 120 ms during switch actuation to ensure pinpoint click accuracy.
+2. **Clutch / Freeze Control:** An integrated momentary clutch allowing the user to reposition their arm without displacing the cursor.
+3. **Pure C Embedded Architecture:** Developed completely from scratch without high-level abstraction frameworks (no Arduino), utilizing native ARM registers, STM32 HAL, and bare-metal USB middleware.
 
 ---
 
-## 🔌 Pinout & Wiring Diagram
+## 🚀 Key Features
 
-| Component | Pin | ESP32 GPIO | Description / Mode |
+- **6-Axis Motion Tracking:** Reads angular velocity and linear acceleration from the MPU-6050 sensor via I2C at 100 Hz.
+- **Native USB HID Emulation:** Uses the STM32 on-chip Full-Speed USB controller to emulate a hardware mouse. Plug & Play on Windows, macOS, and Linux (no drivers required).
+- **Dynamic Speed Scaling (Acceleration):** Non-linear mapping—slow gestures provide pixel-level precision, while quick flicks enable rapid multi-monitor traversal.
+- **Scroll Mode:** Holding the secondary function switch converts pitch inclination into vertical mouse-wheel scrolling.
+- **Deadzone Noise Filtering:** Rejects natural physiological tremors when holding the device stationary.
+
+---
+
+## 🛠️ Hardware Specification (Bill of Materials)
+
+| Component | Model / Spec | Role |
+| :--- | :--- | :--- |
+| **Microcontroller** | STM32F411CEU6 ("Black Pill") | ARM Cortex-M4 @ 100 MHz, Hardware USB FS |
+| **IMU Sensor** | MPU-6050 (GY-521 breakout) | 3-axis gyro + 3-axis accelerometer |
+| **Switches** | 3x Tactile Microswitches (6x6 mm) | Left Click, Right Click, Clutch/Scroll |
+| **Interface** | USB Type-C | Power delivery and native USB HID data |
+| **Enclosure** | Custom 3D-printed PETG/PLA | Ergonomic handheld chassis |
+
+---
+
+## 🔌 Hardware Pinout & Wiring
+
+| Peripheral | Sensor / Component Pin | STM32 Pin | Function / Configuration |
 | :--- | :--- | :--- | :--- |
-| **MPU-6050** | VCC | **3V3** | Power supply |
-| **MPU-6050** | GND | **GND** | Ground |
-| **MPU-6050** | SCL | **GPIO 22** | I2C Clock |
-| **MPU-6050** | SDA | **GPIO 21** | I2C Data |
-| **Left Click (LMB)** | Pin 1 / Pin 2 | **GPIO 18** / **GND** | `INPUT_PULLUP` (Active LOW) |
-| **Right Click (RMB)**| Pin 1 / Pin 2 | **GPIO 19** / **GND** | `INPUT_PULLUP` (Active LOW) |
-| **Clutch / Function**| Pin 1 / Pin 2 | **GPIO 23** / **GND** | `INPUT_PULLUP` (Active LOW) |
+| **MPU-6050** | VCC | **3.3V** | Power supply |
+| **MPU-6050** | GND | **GND** | Ground reference |
+| **MPU-6050** | SCL | **PB8** (or PB6) | I2C1_SCL |
+| **MPU-6050** | SDA | **PB9** (or PB7) | I2C1_SDA |
+| **Left Click (LMB)** | Pin 1 / Pin 2 | **PA0** / **GND** | GPIO Input (PULL-UP, Active LOW) |
+| **Right Click (RMB)**| Pin 1 / Pin 2 | **PA1** / **GND** | GPIO Input (PULL-UP, Active LOW) |
+| **Clutch / Function**| Pin 1 / Pin 2 | **PA2** / **GND** | GPIO Input (PULL-UP, Active LOW) |
+| **PC Host Link** | Type-C Receptacle | **PA11 / PA12** | USB_OTG_FS (DM / DP) |
 
 ---
 
-## 📅 Development Roadmap & Milestones (Deadline: Mid-December)
-- [x] Component selection, requirements specification, and SMART goal definition.
-- [ ] **Milestone 1:** Breadboard prototype: MPU-6050 I2C data acquisition & basic BLE HID cursor movement.
-- [ ] **Milestone 2:** Firmware refinement: deadzone filtering, dynamic acceleration, and scroll mode implementation.
-- [ ] **Milestone 3:** Power circuit integration (Li-Po + TP4056) and CAD modeling / 3D printing of the casing.
-- [ ] **Milestone 4:** Final user testing, latency benchmarking, and project documentation.
+## 💻 Software Architecture
+
+- **Language:** Pure C (C99 standard)
+- **IDE / Toolchain:** STM32CubeIDE & GNU Arm Embedded Toolchain
+- **Hardware Abstraction:** STM32Cube HAL / CMSIS
+- **USB Stack:** STM32 USB Device Middleware (Class: Human Interface Device / HID Mouse)
+
+```text
+[ MPU-6050 IMU ] ---> (I2C1) ---> [ Sensor Read & Deadzone Filter ]
+                                                 |
+[ Pushbuttons ]  ---> (GPIO) ---> [ Anti-Jitter / Clutch Logic ]
+                                                 |
+                                  [ Coordinate Transformation ]
+                                                 |
+                                  [ USB HID Report Packets ]
+                                                 |
+                                            (USB Type-C)
+                                                 v
+                                     [ Host Operating System ]
+📅 Milestones & Roadmap (Deadline: Mid-December)
+
+Project scope definition, competitor benchmark & SMART requirements.
+
+Milestone 1: Hardware setup & I2C communication with MPU-6050 in C (raw gyro readout).
+
+Milestone 2: Configuration of native USB HID Stack and implementation of Anti-Jitter / Deadzone algorithms.
+
+Milestone 3: Breadboard validation of full mouse functionality (Click, Scroll, Clutch).
+
+Milestone 4: CAD modeling & 3D printing of the handheld enclosure; final testing and documentation.
