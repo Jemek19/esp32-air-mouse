@@ -63,6 +63,7 @@ This project modernizes the air mouse concept by introducing:
 - **USB Stack:** STM32 USB Device Middleware (Class: Human Interface Device / HID Mouse)
 
 
+```text
 [ MPU-6050 IMU ] ---> (I2C1) ---> [ Sensor Read & Deadzone Filter ]
                                                  |
 [ Pushbuttons ]  ---> (GPIO) ---> [ Anti-Jitter / Clutch Logic ]
@@ -74,8 +75,7 @@ This project modernizes the air mouse concept by introducing:
                                             (USB Type-C)
                                                  v
                                      [ Host Operating System ]
----
-
+```
 ## 📅 Milestones & Roadmap (Deadline: Mid-December)
 
 - [x] Project scope definition, competitor benchmark & SMART requirements.
@@ -83,10 +83,3 @@ This project modernizes the air mouse concept by introducing:
 - [ ] Milestone 2: Configuration of native USB HID Stack and implementation of Anti-Jitter / Deadzone algorithms.
 - [ ] Milestone 3: Breadboard validation of full mouse functionality (Click, Scroll, Clutch).
 - [ ] Milestone 4: CAD modeling & 3D printing of the handheld enclosure; final testing and documentation.
-
----
-
-## 👥 Project Team
-
-- **Member A:** Embedded software, I2C sensor driver, filtering & dynamic acceleration algorithms in C.
-- **Member B:** Hardware assembly, USB HID stack integration, CAD enclosure modeling & 3D printing.
