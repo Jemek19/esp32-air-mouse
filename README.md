@@ -76,7 +76,7 @@ This project modernizes the air mouse concept by introducing:
                                                  v
                                      [ Host Operating System ]
 ```
-## 📅 Milestones & Roadmap (Deadline: Mid-December)
+## 📅 Milestones & Roadmap
 
 - [x] Project scope definition, competitor benchmark & SMART requirements.
 - [ ] Milestone 1: Hardware setup & I2C communication with MPU-6050 in C (raw gyro readout).
