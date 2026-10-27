@@ -62,20 +62,8 @@ This project modernizes the air mouse concept by introducing:
 - **Hardware Abstraction:** STM32Cube HAL / CMSIS
 - **USB Stack:** STM32 USB Device Middleware (Class: Human Interface Device / HID Mouse)
 
+---
 
-```text
-[ MPU-6050 IMU ] ---> (I2C1) ---> [ Sensor Read & Deadzone Filter ]
-                                                 |
-[ Pushbuttons ]  ---> (GPIO) ---> [ Anti-Jitter / Clutch Logic ]
-                                                 |
-                                  [ Coordinate Transformation ]
-                                                 |
-                                  [ USB HID Report Packets ]
-                                                 |
-                                            (USB Type-C)
-                                                 v
-                                     [ Host Operating System ]
-```
 ## 📅 Milestones & Roadmap
 
 - [x] Project scope definition, competitor benchmark & SMART requirements.
