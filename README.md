@@ -70,7 +70,6 @@ This project modernizes the air mouse concept by introducing:
 - [ ] Milestone 1: Hardware setup & I2C communication with MPU-6050 in C.
 - [ ] Milestone 2: Configuration of native USB HID Stack
 - [ ] Milestone 3: Programming main functionalities (Click, Scroll, Clutch, etc.).
-- [ ] Milestone 4: Implementation of Anti-Jitter / Deadzone algorithms.
-- [ ] Milestone 5: Breadboard validation of full mouse functionality.
-- [ ] Milestone 6: CAD modeling & 3D printing of the handheld enclosure.
-- [ ] Milestone 7: Preparing data and documentation of project.
+- [ ] Milestone 4: Breadboard validation of full mouse functionality.
+- [ ] Milestone 5: CAD modeling & 3D printing of the handheld enclosure.
+- [ ] Milestone 6: Preparing data and documentation of project.
